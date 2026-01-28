@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Text Compare - Free Online Text Diff Tool | Instant Highlight Differences</title>
+  <meta name="description" content="Free online text compare tool. Paste two texts side-by-side and instantly see highlighted differences (added in green, removed in red). Real-time diff, no signup, 100% client-side & private. Perfect for code, articles, contracts & more." />
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      daisyui: { themes: ["dark", "light"], darkTheme: "dark" }
+    }
+  </script>
+
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+    }
+    #editor-container {
+      width: 100%;
+      min-height: 80vh;
+      height: 600px;
+      max-height: 85vh;
+      resize: vertical;
+      overflow: hidden;
+      border-radius: 1rem;
+      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
+    }
+    #editor {
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+<body class="bg-base-100 text-base-content flex flex-col min-h-screen antialiased">
+
+  <!-- Header -->
+  <header class="navbar bg-gradient-to-r from-indigo-950 via-purple-950 to-violet-950 text-white shadow-xl z-10 flex-shrink-0 w-full">
+    <div class="flex-1 px-4 lg:px-8">
+      <h1 class="text-2xl md:text-3xl font-bold tracking-tight">Text Compare</h1>
+      <p class="text-sm opacity-80 ml-3 hidden md:block">Free Real-Time Diff Tool</p>
+    </div>
+    <div class="flex-none px-4 lg:px-8">
+      <button id="theme-toggle" class="btn btn-ghost btn-sm gap-2">
+        <span id="theme-text">Switch to Light Mode</span>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M10 2a8 8 0 100 16 8 8 0 000-16z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="flex flex-col gap-8 p-4 md:p-6 lg:p-8 w-full">
+
+    <!-- Controls -->
+    <div class="flex flex-col sm:flex-row justify-between items-center gap-4 bg-base-200/60 backdrop-blur-sm p-5 rounded-2xl border border-base-300/40">
+      <label class="flex items-center gap-3 cursor-pointer select-none">
+        <input type="checkbox" id="line-numbers" class="checkbox checkbox-primary checkbox-lg" checked />
+        <span class="text-lg font-medium">Show Line Numbers</span>
+      </label>
+      <div class="text-sm md:text-base opacity-90 text-center">
+        Left: Original • Right: Modified • Differences highlighted in real-time
+      </div>
+    </div>
+
+    <!-- Editor -->
+    <div id="editor-container">
+      <div id="editor" class="w-full h-full"></div>
+    </div>
+
+    <!-- How to Use -->
+    <div class="card bg-base-100/70 backdrop-blur-md border border-base-300/30 shadow-2xl rounded-2xl">
+      <div class="card-body p-6 md:p-8">
+        <h2 class="card-title text-2xl mb-4">How to Use</h2>
+        <ul class="list-disc pl-6 space-y-3 text-base opacity-90">
+          <li>Paste or type your original text on the left</li>
+          <li>Paste or type the modified text on the right</li>
+          <li>Differences highlight automatically: <span class="text-success font-medium">green</span> for added, <span class="text-error font-medium">red</span> for removed</li>
+          <li>Toggle line numbers for easy reference</li>
+          <li>Scrolling is synchronized between both sides</li>
+          <li>Switch dark/light mode with the top-right button</li>
+          <li>100% client-side • Private • No data sent to servers</li>
+        </ul>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer footer-center p-6 bg-base-200/80 text-base-content border-t border-base-300/50 mt-auto w-full">
+    <div class="text-sm opacity-80">
+      © 2026 Text Compare. All rights reserved.
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.55.1/min/vs/loader.js"></script>
+  <script>
+    require.config({ paths: { vs: 'https://cdn.jsdelivr.net/npm/monaco-editor@0.55.1/min/vs' } });
+
+    require(['vs/editor/editor.main'], () => {
+      const container = document.getElementById('editor');
+
+      const diffEditor = monaco.editor.createDiffEditor(container, {
+        automaticLayout: true,
+        renderSideBySide: true,
+        originalEditable: true,
+        modifiedEditable: true,
+        enableSplitViewResizing: true,
+        minimap: { enabled: false },
+        fontSize: 16,
+        lineHeight: 28,
+        lineNumbers: 'on',
+        theme: 'vs-dark',
+        scrollBeyondLastLine: false,
+        renderWhitespace: 'boundary',
+        folding: true,
+        glyphMargin: false,
+        ignoreTrimWhitespace: true,
+        renderIndicators: true,
+        renderOverviewRuler: true,
+        diffAlgorithm: 'advanced',
+      });
+
+      const originalModel = monaco.editor.createModel(
+        'Paste your original text here...\n',
+        'plaintext'
+      );
+
+      const modifiedModel = monaco.editor.createModel(
+        'Paste your modified text here...\nDifferences will highlight instantly!\n',
+        'plaintext'
+      );
+
+      diffEditor.setModel({ original: originalModel, modified: modifiedModel });
+
+      setTimeout(() => {
+        diffEditor.updateOptions({});
+      }, 100);
+
+      const originalEditor = diffEditor.getOriginalEditor();
+      const modifiedEditor = diffEditor.getModifiedEditor();
+
+      document.getElementById('line-numbers').onchange = (e) => {
+        const mode = e.target.checked ? 'on' : 'off';
+        originalEditor.updateOptions({ lineNumbers: mode });
+        modifiedEditor.updateOptions({ lineNumbers: mode });
+      };
+
+      let isDark = true;
+      document.getElementById('theme-toggle').onclick = () => {
+        isDark = !isDark;
+        document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+        monaco.editor.setTheme(isDark ? 'vs-dark' : 'vs');
+        document.getElementById('theme-text').textContent = isDark 
+          ? 'Switch to Light Mode' 
+          : 'Switch to Dark Mode';
+      };
+    });
+  </script>
+</body>
+</html>
