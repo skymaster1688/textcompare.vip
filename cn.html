@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>免费在线文本对比工具 - 实时Diff高亮 | Text Compare 2026</title>
+  <meta name="description" content="免费在线文本对比工具，支持并排查看两段文字差异，实时高亮新增/删除/修改内容。粘贴即可使用，无需注册，100%客户端运行，保护隐私。适合代码、文章、合同版本对比。" />
+  <meta name="keywords" content="文本对比,文本差异,online text compare,免费diff工具,代码对比,文章版本对比,实时文本diff,text diff checker,免费在线文本比较" />
+
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      daisyui: { themes: ["dark", "light"], darkTheme: "dark" }
+    }
+  </script>
+
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+    }
+    #editor-container {
+      width: 100%;
+      min-height: 80vh;
+      height: 600px;
+      max-height: 85vh;
+      resize: vertical;
+      overflow: hidden;
+      border-radius: 1rem;
+      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
+    }
+    #editor {
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+<body class="bg-base-100 text-base-content flex flex-col min-h-screen antialiased">
+
+  <!-- Header -->
+  <header class="navbar bg-gradient-to-r from-indigo-950 via-purple-950 to-violet-950 text-white shadow-xl z-10 flex-shrink-0 w-full">
+    <div class="flex-1 px-4 lg:px-8">
+      <h1 class="text-2xl md:text-3xl font-bold tracking-tight">免费在线文本对比工具</h1>
+      <p class="text-sm opacity-80 ml-3 hidden md:block">实时差异高亮 · Diff 工具</p>
+    </div>
+    <div class="flex-none px-4 lg:px-8">
+      <button id="theme-toggle" class="btn btn-ghost btn-sm gap-2">
+        <span id="theme-text">切换到浅色模式</span>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M10 2a8 8 0 100 16 8 8 0 000-16z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="flex flex-col gap-8 p-4 md:p-6 lg:p-8 w-full">
+
+    <!-- Controls -->
+    <div class="flex flex-col sm:flex-row justify-between items-center gap-4 bg-base-200/60 backdrop-blur-sm p-5 rounded-2xl border border-base-300/40">
+      <label class="flex items-center gap-3 cursor-pointer select-none">
+        <input type="checkbox" id="line-numbers" class="checkbox checkbox-primary checkbox-lg" checked />
+        <span class="text-lg font-medium">显示行号</span>
+      </label>
+      <div class="text-sm md:text-base opacity-90 text-center">
+        左侧：原始文本 • 右侧：修改文本 • 差异实时高亮显示
+      </div>
+    </div>
+
+    <!-- Monaco Editor -->
+    <div id="editor-container">
+      <div id="editor" class="w-full h-full"></div>
+    </div>
+
+    <!-- How to Use -->
+    <div class="card bg-base-100/70 backdrop-blur-md border border-base-300/30 shadow-2xl rounded-2xl">
+      <div class="card-body p-6 md:p-8">
+        <h2 class="card-title text-2xl mb-4">使用方法</h2>
+        <ul class="list-disc pl-6 space-y-3 text-base opacity-90">
+          <li>在左侧粘贴或输入原始文本</li>
+          <li>在右侧粘贴或输入修改后的文本</li>
+          <li>差异自动高亮：<span class="text-success font-medium">绿色</span> 为新增，<span class="text-error font-medium">红色</span> 为删除</li>
+          <li>可开关行号，便于精准定位</li>
+          <li>两侧滚动同步，方便对照</li>
+          <li>右上角按钮切换深色/浅色模式</li>
+          <li>完全客户端运行 • 隐私保护 • 无数据上传</li>
+        </ul>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer footer-center p-6 bg-base-200/80 text-base-content border-t border-base-300/50 mt-auto w-full">
+    <div class="text-sm opacity-80">
+      © 2026 免费文本对比工具 • Powered by Monaco Editor • 使用 Tailwind & DaisyUI 构建
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.55.1/min/vs/loader.js"></script>
+  <script>
+    require.config({ paths: { vs: 'https://cdn.jsdelivr.net/npm/monaco-editor@0.55.1/min/vs' } });
+
+    require(['vs/editor/editor.main'], () => {
+      const container = document.getElementById('editor');
+
+      const diffEditor = monaco.editor.createDiffEditor(container, {
+        automaticLayout: true,
+        renderSideBySide: true,
+        originalEditable: true,
+        modifiedEditable: true,
+        enableSplitViewResizing: true,
+        minimap: { enabled: false },
+        fontSize: 16,
+        lineHeight: 28,
+        lineNumbers: 'on',
+        theme: 'vs-dark',
+        scrollBeyondLastLine: false,
+        renderWhitespace: 'boundary',
+        folding: true,
+        glyphMargin: false,
+        ignoreTrimWhitespace: true,
+        renderIndicators: true,
+        renderOverviewRuler: true,
+        diffAlgorithm: 'advanced',
+      });
+
+      const originalModel = monaco.editor.createModel(
+        '在这里粘贴原始文本...\n'.repeat(10),
+        'plaintext'
+      );
+
+      const modifiedModel = monaco.editor.createModel(
+        '在这里粘贴修改后的文本...\n差异会自动高亮显示！\n'.repeat(10),
+        'plaintext'
+      );
+
+      diffEditor.setModel({ original: originalModel, modified: modifiedModel });
+
+      setTimeout(() => {
+        diffEditor.updateOptions({});
+      }, 100);
+
+      const originalEditor = diffEditor.getOriginalEditor();
+      const modifiedEditor = diffEditor.getModifiedEditor();
+
+      document.getElementById('line-numbers').onchange = (e) => {
+        const mode = e.target.checked ? 'on' : 'off';
+        originalEditor.updateOptions({ lineNumbers: mode });
+        modifiedEditor.updateOptions({ lineNumbers: mode });
+      };
+
+      let isDark = true;
+      document.getElementById('theme-toggle').onclick = () => {
+        isDark = !isDark;
+        document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+        monaco.editor.setTheme(isDark ? 'vs-dark' : 'vs');
+        document.getElementById('theme-text').textContent = isDark 
+          ? '切换到浅色模式' 
+          : '切换到深色模式';
+      };
+    });
+  </script>
+</body>
+</html>
