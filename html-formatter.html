@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Formatter: Free Online HTML Beautifier & Minifier</title>
+    <meta name="description" content="Free online HTML formatter and beautifier. Beautify, minify, and clean HTML code instantly. Sort attributes, customize indentation. 100% private, client-side processing.">
+    <link rel="canonical" href="https://textcompare.vip/html-formatter.html" />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236366f1' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m16 18 6-6-6-6'/%3E%3Cpath d='m8 6-6 6 6 6'/%3E%3C/svg%3E" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="HTML Formatter: Free Online HTML Beautifier & Minifier" />
+    <meta property="og:description" content="Free online HTML formatter and beautifier. Beautify, minify, and clean HTML code instantly. 100% private, client-side processing." />
+    <meta property="og:url" content="https://textcompare.vip/html-formatter.html" />
+    <meta property="og:site_name" content="HTML Formatter" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="HTML Formatter: Free Online HTML Beautifier & Minifier" />
+    <meta name="twitter:description" content="Free online HTML formatter and beautifier. Beautify, minify, and clean HTML code instantly. 100% private, no signup required." />
+    <link rel="stylesheet" href="style/css/main.css">
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="brand-l">
+          <div class="logo"><i class="ic" data-icon="code2"></i></div>
+          <div>
+            <h1>HTML Formatter <span class="pro-badge">PRO</span></h1>
+            <p class="sub">Beautify, minify &amp; clean HTML code</p>
+          </div>
+        </div>
+        <div class="mobile-ctrls">
+          <button class="icon-btn" id="mThemeBtn" title="Toggle Theme"><i class="ic" data-icon="moon"></i></button>
+        </div>
+      </div>
+      <div class="center-ctrls">
+        <div class="preset-wrap">
+          <i class="ic" data-icon="sparkles"></i>
+          <span class="hide-sm" style="color:var(--muted)">Samples:</span>
+          <select id="presetSelect">
+            <option value="" disabled selected>Load Preset...</option>
+          </select>
+        </div>
+      </div>
+      <div class="right-ctrls">
+        <button class="btn pc-only" id="themeBtn"><i class="ic" data-icon="moon"></i><span>Dark</span></button>
+        <button class="btn" id="copyBtn" title="Copy formatted HTML (Alt+C)"><i class="ic" data-icon="copy"></i><span class="hide-sm">Copy</span></button>
+        <button class="btn" id="clearBtn" title="Clear input"><i class="ic" data-icon="trash"></i><span class="hide-sm">Clear</span></button>
+        <button class="btn btn-primary" id="downloadBtn" title="Download formatted HTML"><i class="ic" data-icon="download"></i><span>Download</span></button>
+        <button class="icon-btn" id="helpBtn" title="Shortcuts & Help"><i class="ic" data-icon="help"></i></button>
+      </div>
+    </div>
+  </header>
+
+  <div class="statsbar">
+    <div class="stats-left">
+      <div class="pill pill-match" title="Input size"><i class="ic" data-icon="file-text"></i><span id="statInput">0 bytes</span></div>
+      <div class="pill pill-add" title="Output size"><i class="ic" data-icon="file-text"></i><span id="statOutput">0 bytes</span></div>
+      <div class="pill pill-del" title="Size change"><i class="ic" data-icon="percent"></i><span id="statChange">0%</span></div>
+      <div class="pill pill-unchanged" title="Line count"><i class="ic" data-icon="hash"></i><span id="statLines">0 lines</span></div>
+    </div>
+    <div class="stats-right">
+      <div class="search-wrap">
+        <i class="ic s-ic" data-icon="search"></i>
+        <input type="text" id="searchInput" placeholder="Search output...">
+        <button class="clear" id="searchClear" hidden><i class="ic" data-icon="x"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="optionsbar">
+    <div class="opt-group">
+      <div class="segmented plain">
+        <span class="seg-label">Indent:</span>
+        <button id="indent2" class="active"><span>2 Spaces</span></button>
+        <button id="indent4"><span>4 Spaces</span></button>
+        <button id="indentTab"><span>Tab</span></button>
+      </div>
+      <div class="segmented plain">
+        <span class="seg-label">Mode:</span>
+        <button id="modeBeautify" class="active"><span>Beautify</span></button>
+        <button id="modeMinify"><span>Minify</span></button>
+      </div>
+    </div>
+    <div class="opt-group">
+      <button class="opt-btn" id="optSortAttrs"><i class="ic" data-icon="updown"></i><span>Sort Attributes</span></button>
+      <button class="opt-btn" id="optAttrPerLine"><i class="ic" data-icon="rows"></i><span class="hide-sm">Attr Per Line</span></button>
+      <button class="opt-btn" id="optPreserveComments"><i class="ic" data-icon="file-text"></i><span>Keep Comments</span></button>
+      <button class="opt-btn" id="optQuotes"><i class="ic" data-icon="code2"></i><span>Double Quotes</span></button>
+    </div>
+  </div>
+
+  <main class="workspace">
+    <div class="edit-grid" id="editGrid">
+      <div class="mobile-tabs">
+        <button id="tabLeft" class="left active">Input HTML</button>
+        <button id="tabRight" class="right">Formatted Output</button>
+      </div>
+      <div class="panel" id="panelLeft">
+        <div class="panel-head">
+          <span class="panel-title left">Input HTML</span>
+          <span class="panel-stat" id="leftStat">0 lines • 0 chars</span>
+          <div class="panel-actions">
+            <button class="tbtn" data-up="left"><i class="ic" data-icon="upload"></i><span>Upload</span></button>
+            <button class="tbtn" data-copy="left"><i class="ic" data-icon="copy"></i><span>Copy</span></button>
+            <input type="file" class="file-in" data-side="left" accept=".html,.htm,.xhtml,.html.txt,.txt" hidden>
+          </div>
+        </div>
+        <textarea class="editor" id="leftInput" placeholder="Paste or type your HTML code here..." spellcheck="false"></textarea>
+      </div>
+      <div class="panel hide-m" id="panelRight">
+        <div class="panel-head">
+          <span class="panel-title right">Formatted Output</span>
+          <span class="panel-stat" id="rightStat">0 lines • 0 chars</span>
+          <div class="panel-actions">
+            <button class="tbtn" id="copyOutputBtn"><i class="ic" data-icon="copy"></i><span>Copy</span></button>
+            <button class="tbtn" id="downloadOutputBtn"><i class="ic" data-icon="download"></i><span>Download</span></button>
+          </div>
+        </div>
+        <pre class="editor" id="rightOutput" style="white-space:pre-wrap;word-break:break-all;overflow:auto" tabindex="0"></pre>
+      </div>
+    </div>
+  </main>
+
+  <section class="skyer">
+    <div class="skyer-inner">
+      <div class="skyer-intro">
+        <span class="badge-pill"><i class="ic" data-icon="sparkles"></i> Fast, Secure &amp; Free Online HTML Formatter</span>
+        <h2>Powerful HTML Beautifier, Minifier &amp; Cleaner</h2>
+        <p>Instantly beautify messy HTML code or compress it for production. Sort attributes, customize indentation, and clean up markup with precision. Everything runs locally in your browser.</p>
+      </div>
+      <div class="feat-grid">
+        <div class="feat"><div class="fic ind"><i class="ic" data-icon="zap"></i></div><h3>Instant Beautify &amp; Minify</h3><p>Switch between human-readable indented markup and compact production-ready minified code in a single click.</p></div>
+        <div class="feat"><div class="fic em"><i class="ic" data-icon="file-code"></i></div><h3>Sort Attributes</h3><p>Optionally alphabetize HTML attributes for consistency, cleaner diffs, and easier code review across your team.</p></div>
+        <div class="feat"><div class="fic am"><i class="ic" data-icon="lock"></i></div><h3>100% Client-Side Privacy</h3><p>Your markup is processed entirely inside your browser. No HTML is uploaded to any remote server, ever.</p></div>
+        <div class="feat"><div class="fic te"><i class="ic" data-icon="download"></i></div><h3>Download &amp; Copy</h3><p>Copy the formatted output to your clipboard or download it as a clean .html file ready to paste into your project.</p></div>
+      </div>
+      <div class="howto">
+        <h3><i class="ic" data-icon="check2"></i> How to Format HTML Online (3 Simple Steps)</h3>
+        <div class="steps">
+          <div class="step"><div class="num">1</div><div><h4>Paste or Upload HTML</h4><p>Paste your raw or minified HTML into the left pane, or upload an .html file directly from your computer.</p></div></div>
+          <div class="step"><div class="num">2</div><div><h4>Choose Options</h4><p>Pick indentation (2 spaces, 4 spaces, or tabs), toggle attribute sorting, attribute-per-line, and comment preservation.</p></div></div>
+          <div class="step"><div class="num">3</div><div><h4>Copy or Download</h4><p>Review the formatted output in the right pane, then copy it to your clipboard or download the cleaned .html file.</p></div></div>
+        </div>
+      </div>
+      <div class="faq">
+        <h3><i class="ic" data-icon="help"></i> Frequently Asked Questions</h3>
+        <div class="faq-grid">
+          <div class="faq-item"><h4>Is my HTML code kept private?</h4><p>Yes. All formatting and minification happens locally inside your web browser. Nothing is sent to external servers.</p></div>
+          <div class="faq-item"><h4>Does this tool support minification?</h4><p>Absolutely. Switch to "Minify" mode to remove unnecessary whitespace and comments for production-ready compact HTML.</p></div>
+          <div class="faq-item"><h4>Can I sort HTML attributes automatically?</h4><p>Yes. Enable "Sort Attributes" to alphabetize all element attributes for consistent, review-friendly markup.</p></div>
+          <div class="faq-item"><h4>Are keyboard shortcuts available?</h4><p>Yes! Press Alt+C to copy formatted output, Alt+D to download the HTML file, and Alt+H to open the shortcuts help.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site">
+    <div class="foot-inner">
+      <div class="foot-brand">
+        <div class="logo"><i class="ic" data-icon="code2"></i></div>
+        <span class="b">HTML Formatter PRO</span>
+        <span class="dot">•</span>
+        <p style="margin:0">© <span id="year"></span> Online HTML Beautifier &amp; Minifier. All rights reserved.</p>
+      </div>
+      <div class="foot-sec"><i class="ic" data-icon="shield"></i> Browser Local &amp; Client-Side Execution</div>
+      <div class="foot-actions">
+        <button id="footHelp"><i class="ic" data-icon="keyboard"></i> Shortcuts (Alt+H)</button>
+        <button id="footDownload">Download HTML</button>
+        <span class="dot">•</span>
+        <span class="foot-love">Crafted with <i class="ic" data-icon="heart"></i> for Developers</span>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<div class="modal-overlay" id="exportModal" hidden>
+  <div class="modal">
+    <div class="m-head">
+      <div class="m-head-l">
+        <div class="m-ic"><i class="ic" data-icon="download"></i></div>
+        <div>
+          <h3>Download Formatted HTML</h3>
+          <p>Save the cleaned HTML as a file</p>
+        </div>
+      </div>
+      <button class="modal-close" data-close="export"><i class="ic" data-icon="x"></i></button>
+    </div>
+    <div class="export-list">
+      <button class="export-item primary" id="dlHtml"><div class="ei-l"><div class="ei-ic"><i class="ic" data-icon="file-text"></i></div><div><div class="ei-t">Download Formatted HTML (.html)</div><div class="ei-d">Save the cleaned, beautified HTML as a standalone file</div></div></div><div class="ei-arrow"><i class="ic" data-icon="download"></i></div></button>
+      <button class="export-item" id="dlMin"><div class="ei-l"><div class="ei-ic"><i class="ic" data-icon="code2"></i></div><div><div class="ei-t">Download Minified HTML (.html)</div><div class="ei-d">Save compact, production-ready minified HTML</div></div></div><div class="ei-arrow"><i class="ic" data-icon="download"></i></div></button>
+      <button class="export-item" id="cpOutput"><div class="ei-l"><div class="ei-ic"><i class="ic" data-icon="copy"></i></div><div><div class="ei-t">Copy Output to Clipboard</div><div class="ei-d">Copy the currently displayed output directly</div></div></div><div class="ei-arrow" id="cpOutputIc"><i class="ic" data-icon="copy"></i></div></button>
+    </div>
+    <div class="patch-preview"><pre id="outputPreview"></pre></div>
+    <div class="modal-foot"><button class="btn" data-close="export">Close</button></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="helpModal" hidden>
+  <div class="modal" style="max-width:28rem">
+    <div class="m-head">
+      <div class="m-head-l">
+        <div class="m-ic"><i class="ic" data-icon="keyboard"></i></div>
+        <div><h3>Keyboard Shortcuts &amp; Help</h3></div>
+      </div>
+      <button class="modal-close" data-close="help"><i class="ic" data-icon="x"></i></button>
+    </div>
+    <div class="sc-list" id="scList"></div>
+    <div class="tips">
+      <strong>Tips for clean HTML:</strong>
+      <ul>
+        <li>Use <strong>Beautify</strong> mode for readable, indented markup.</li>
+        <li>Use <strong>Minify</strong> mode for production-ready compact output.</li>
+        <li>Enable <strong>Sort Attributes</strong> for consistent, diff-friendly code.</li>
+      </ul>
+    </div>
+    <div class="modal-foot"><button class="btn btn-primary" data-close="help" style="background:var(--accent);color:#fff;border:none">Got it</button></div>
+  </div>
+</div>
+
+<script src="style/js/html-formatter.js"></script>
+</body>
+</html>
