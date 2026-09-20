@@ -1,166 +1,274 @@
 <!DOCTYPE html>
-<html lang="zh-CN" data-theme="dark" class="scroll-smooth">
+<html lang="zh-CN">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>免费在线文本对比工具 - 实时Diff高亮 | Text Compare 2026</title>
-  <meta name="description" content="免费在线文本对比工具，支持并排查看两段文字差异，实时高亮新增/删除/修改内容。粘贴即可使用，无需注册，100%客户端运行，保护隐私。适合代码、文章、合同版本对比。" />
-  <meta name="keywords" content="文本对比,文本差异,online text compare,免费diff工具,代码对比,文章版本对比,实时文本diff,text diff checker,免费在线文本比较" />
-
-  <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css" />
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      daisyui: { themes: ["dark", "light"], darkTheme: "dark" }
-    }
-  </script>
-
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      min-height: 100vh;
-    }
-    #editor-container {
-      width: 100%;
-      min-height: 80vh;
-      height: 600px;
-      max-height: 85vh;
-      resize: vertical;
-      overflow: hidden;
-      border-radius: 1rem;
-      border: 1px solid rgba(255,255,255,0.1);
-      box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
-    }
-    #editor {
-      width: 100%;
-      height: 100%;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文本比较在线工具：免费文本差异检测器</title>
+    <meta name="description" content="免费在线文本比较工具，支持并排差异对比视图。即时比较代码、JSON、Markdown 和纯文本。100% 私密，纯客户端处理。">
+    <link rel="canonical" href="https://textcompare.vip/cn.html" />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236366f1' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='18' cy='18' r='3'/%3E%3Ccircle cx='6' cy='6' r='3'/%3E%3Cpath d='M13 6h3a2 2 0 0 1 2 2v7'/%3E%3Cpath d='M11 18H8a2 2 0 0 1-2-2V9'/%3E%3C/svg%3E" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="文本比较在线工具：免费文本差异检测器" />
+    <meta property="og:description" content="免费在线文本比较工具，支持并排差异对比视图。即时比较代码、JSON、Markdown 和纯文本。100% 私密，纯客户端处理。" />
+    <meta property="og:url" content="https://textcompare.vip/cn.html" />
+    <meta property="og:site_name" content="文本比较" />
+    <meta property="og:image" content="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 630'%3E%3Crect width='1200' height='630' fill='%23020617'/%3E%3Crect x='100' y='100' width='440' height='430' rx='16' fill='%230f172a' stroke='%23475569' stroke-width='2'/%3E%3Crect x='660' y='100' width='440' height='430' rx='16' fill='%230f172a' stroke='%23475569' stroke-width='2'/%3E%3Crect x='100' y='100' width='440' height='48' rx='16' fill='%231e293b'/%3E%3Crect x='660' y='100' width='440' height='48' rx='16' fill='%231e293b'/%3E%3Ccircle cx='124' cy='124' r='10' fill='%23f87171'/%3E%3Ccircle cx='684' cy='124' r='10' fill='%234ade80'/%3E%3Ctext x='600' y='60' text-anchor='middle' font-family='system-ui, sans-serif' font-size='44' font-weight='bold' fill='%236366f1'%3E文本比较 — 免费在线差异对比工具%3C/text%3E%3C/svg%3E" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="文本比较在线工具：免费文本差异检测器" />
+    <meta name="twitter:description" content="免费在线文本比较工具，支持并排差异对比视图。即时比较代码、JSON、Markdown。100% 私密，无需注册。" />
+    <meta name="twitter:image" content="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 630'%3E%3Crect width='1200' height='630' fill='%23020617'/%3E%3Crect x='100' y='100' width='440' height='430' rx='16' fill='%230f172a' stroke='%23475569' stroke-width='2'/%3E%3Crect x='660' y='100' width='440' height='430' rx='16' fill='%230f172a' stroke='%23475569' stroke-width='2'/%3E%3Crect x='100' y='100' width='440' height='48' rx='16' fill='%231e293b'/%3E%3Crect x='660' y='100' width='440' height='48' rx='16' fill='%231e293b'/%3E%3Ccircle cx='124' cy='124' r='10' fill='%23f87171'/%3E%3Ccircle cx='684' cy='124' r='10' fill='%234ade80'/%3E%3Ctext x='600' y='60' text-anchor='middle' font-family='system-ui, sans-serif' font-size='44' font-weight='bold' fill='%236366f1'%3E文本比较 — 免费在线差异对比工具%3C/text%3E%3C/svg%3E" />
+    <link rel="stylesheet" href="style/css/main.css">
 </head>
-<body class="bg-base-100 text-base-content flex flex-col min-h-screen antialiased">
+<body>
+<div class="app">
+  <!-- ===== Header ===== -->
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="brand-l">
+          <div class="logo"><i class="ic" data-icon="git-compare"></i></div>
+          <div>
+            <h1>文本比较 <span class="pro-badge">PRO</span></h1>
+            <p class="sub">并排 &amp; 行内差异对比工具</p>
+          </div>
+        </div>
+        <div class="mobile-ctrls">
+          <button class="icon-btn" id="mThemeBtn" title="切换主题"><i class="ic" data-icon="moon"></i></button>
+          <div class="segmented">
+            <button id="mEditBtn">编辑</button>
+            <button id="mDiffBtn" class="active">对比</button>
+          </div>
+        </div>
+      </div>
 
-  <!-- Header -->
-  <header class="navbar bg-gradient-to-r from-indigo-950 via-purple-950 to-violet-950 text-white shadow-xl z-10 flex-shrink-0 w-full">
-    <div class="flex-1 px-4 lg:px-8">
-      <h1 class="text-2xl md:text-3xl font-bold tracking-tight">免费在线文本对比工具</h1>
-      <p class="text-sm opacity-80 ml-3 hidden md:block">实时差异高亮 · Diff 工具</p>
-    </div>
-    <div class="flex-none px-4 lg:px-8">
-      <button id="theme-toggle" class="btn btn-ghost btn-sm gap-2">
-        <span id="theme-text">切换到浅色模式</span>
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M10 2a8 8 0 100 16 8 8 0 000-16z"/></svg>
-      </button>
+      <div class="center-ctrls">
+        <div class="preset-wrap">
+          <i class="ic" data-icon="sparkles"></i>
+          <span class="hide-sm" style="color:var(--muted)">示例：</span>
+          <select id="presetSelect">
+            <option value="" disabled selected>加载预设示例...</option>
+          </select>
+        </div>
+        <div class="segmented pc-only" id="modeSeg">
+          <button id="editBtn"><i class="ic" data-icon="file-code"></i> 编辑输入</button>
+          <button id="diffBtn" class="active"><i class="ic" data-icon="git-compare"></i> 对比视图</button>
+        </div>
+      </div>
+
+      <div class="right-ctrls">
+        <button class="btn pc-only" id="themeBtn"><i class="ic" data-icon="moon"></i><span>深色</span></button>
+        <button class="btn" id="swapBtn" title="交换原文与修改文本 (Alt+S)"><i class="ic" data-icon="swap"></i><span class="hide-sm">交换</span></button>
+        <button class="btn" id="clearBtn" title="清空两侧内容"><i class="ic" data-icon="trash"></i><span class="hide-sm">清空</span></button>
+        <button class="btn btn-primary" id="exportBtn" title="导出补丁或 HTML"><i class="ic" data-icon="download"></i><span>导出</span></button>
+        <button class="icon-btn" id="helpBtn" title="快捷键与帮助"><i class="ic" data-icon="help"></i></button>
+      </div>
     </div>
   </header>
 
-  <!-- Main Content -->
-  <main class="flex flex-col gap-8 p-4 md:p-6 lg:p-8 w-full">
+  <!-- ===== Stats bar ===== -->
+  <div class="statsbar">
+    <div class="stats-left">
+      <div class="pill pill-match" title="文本相似度"><i class="ic" data-icon="percent"></i><span id="statMatch">100% 匹配</span></div>
+      <div class="pill pill-add"><i class="ic" data-icon="plus"></i><span id="statAdd">0 新增</span></div>
+      <div class="pill pill-del"><i class="ic" data-icon="minus"></i><span id="statDel">0 删除</span></div>
+      <div class="pill pill-unchanged"><i class="ic" data-icon="check"></i><span id="statUnch">0 未变</span></div>
+    </div>
+    <div class="stats-right">
+      <div class="search-wrap">
+        <i class="ic s-ic" data-icon="search"></i>
+        <input type="text" id="searchInput" placeholder="搜索差异...">
+        <button class="clear" id="searchClear" hidden><i class="ic" data-icon="x"></i></button>
+      </div>
+      <div class="stepper">
+        <span class="lbl" id="stepperLbl">无差异</span>
+        <button id="prevDiff" title="上一处差异 (Alt+P)" disabled><i class="ic" data-icon="chev-up"></i></button>
+        <button id="nextDiff" title="下一处差异 (Alt+N)" disabled><i class="ic" data-icon="chev-down"></i></button>
+      </div>
+    </div>
+  </div>
 
-    <!-- Controls -->
-    <div class="flex flex-col sm:flex-row justify-between items-center gap-4 bg-base-200/60 backdrop-blur-sm p-5 rounded-2xl border border-base-300/40">
-      <label class="flex items-center gap-3 cursor-pointer select-none">
-        <input type="checkbox" id="line-numbers" class="checkbox checkbox-primary checkbox-lg" checked />
-        <span class="text-lg font-medium">显示行号</span>
-      </label>
-      <div class="text-sm md:text-base opacity-90 text-center">
-        左侧：原始文本 • 右侧：修改文本 • 差异实时高亮显示
+  <!-- ===== Options bar ===== -->
+  <div class="optionsbar">
+    <div class="opt-group">
+      <div class="segmented">
+        <button id="splitBtn" class="active"><i class="ic" data-icon="columns"></i><span>分栏视图</span></button>
+        <button id="unifiedBtn"><i class="ic" data-icon="rows"></i><span>统一视图</span></button>
+      </div>
+      <div class="segmented plain">
+        <span class="seg-label">差异：</span>
+        <button id="gLine"><span>按行</span></button>
+        <button id="gWord" class="active"><span>按词</span></button>
+        <button id="gChar"><span>按字符</span></button>
+      </div>
+    </div>
+    <div class="opt-group">
+      <button class="opt-btn" id="optWs"><i class="ic" data-icon="align"></i><span>忽略空格</span></button>
+      <button class="opt-btn" id="optCase"><i class="ic" data-icon="case"></i><span>忽略大小写</span></button>
+      <button class="opt-btn on" id="optNum"><i class="ic" data-icon="hash"></i><span class="hide-sm">行号</span></button>
+      <button class="opt-btn" id="optWrap"><i class="ic" data-icon="wrap"></i><span class="hide-sm">换行</span></button>
+      <button class="opt-btn" id="optOnly"><i class="ic" data-icon="eye"></i><span>仅看差异</span></button>
+    </div>
+  </div>
+
+  <!-- ===== Main ===== -->
+  <main class="workspace">
+    <!-- Edit mode -->
+    <div class="edit-grid" id="editGrid" style="display:none">
+      <div class="mobile-tabs">
+        <button id="tabLeft" class="left active">原文（左侧）</button>
+        <button id="tabRight" class="right">修改（右侧）</button>
+      </div>
+      <div class="panel" id="panelLeft">
+        <div class="panel-head">
+          <span class="panel-title left">原文（左侧）</span>
+          <span class="panel-stat" id="leftStat">0 行 • 0 字符</span>
+          <div class="panel-actions">
+            <button class="tbtn" data-fmt="left"><i class="ic" data-icon="code2"></i><span class="hide-md">格式化 JSON</span></button>
+            <button class="tbtn" data-sort="left"><i class="ic" data-icon="updown"></i><span class="hide-md">排序</span></button>
+            <button class="tbtn" data-trim="left"><i class="ic" data-icon="filter"></i><span class="hide-md">删除空行</span></button>
+            <button class="tbtn" data-up="left"><i class="ic" data-icon="upload"></i><span>上传</span></button>
+            <button class="tbtn" data-copy="left"><i class="ic" data-icon="copy"></i><span>复制</span></button>
+            <input type="file" class="file-in" data-side="left" accept=".txt,.json,.js,.ts,.jsx,.tsx,.py,.md,.html,.css,.csv,.xml,.sql,.log,.jsonld" hidden>
+          </div>
+        </div>
+        <textarea class="editor" id="leftInput" placeholder="在此粘贴或输入原文..." spellcheck="false"></textarea>
+      </div>
+      <div class="panel hide-m" id="panelRight">
+        <div class="panel-head">
+          <span class="panel-title right">修改（右侧）</span>
+          <span class="panel-stat" id="rightStat">0 行 • 0 字符</span>
+          <div class="panel-actions">
+            <button class="tbtn" data-fmt="right"><i class="ic" data-icon="code2"></i><span class="hide-md">格式化 JSON</span></button>
+            <button class="tbtn" data-sort="right"><i class="ic" data-icon="updown"></i><span class="hide-md">排序</span></button>
+            <button class="tbtn" data-trim="right"><i class="ic" data-icon="filter"></i><span class="hide-md">删除空行</span></button>
+            <button class="tbtn" data-up="right"><i class="ic" data-icon="upload"></i><span>上传</span></button>
+            <button class="tbtn" data-copy="right"><i class="ic" data-icon="copy"></i><span>复制</span></button>
+            <input type="file" class="file-in" data-side="right" accept=".txt,.json,.js,.ts,.jsx,.tsx,.py,.md,.html,.css,.csv,.xml,.sql,.log,.jsonld" hidden>
+          </div>
+        </div>
+        <textarea class="editor" id="rightInput" placeholder="在此粘贴或输入修改后的文本..." spellcheck="false"></textarea>
       </div>
     </div>
 
-    <!-- Monaco Editor -->
-    <div id="editor-container">
-      <div id="editor" class="w-full h-full"></div>
-    </div>
-
-    <!-- How to Use -->
-    <div class="card bg-base-100/70 backdrop-blur-md border border-base-300/30 shadow-2xl rounded-2xl">
-      <div class="card-body p-6 md:p-8">
-        <h2 class="card-title text-2xl mb-4">使用方法</h2>
-        <ul class="list-disc pl-6 space-y-3 text-base opacity-90">
-          <li>在左侧粘贴或输入原始文本</li>
-          <li>在右侧粘贴或输入修改后的文本</li>
-          <li>差异自动高亮：<span class="text-success font-medium">绿色</span> 为新增，<span class="text-error font-medium">红色</span> 为删除</li>
-          <li>可开关行号，便于精准定位</li>
-          <li>两侧滚动同步，方便对照</li>
-          <li>右上角按钮切换深色/浅色模式</li>
-          <li>完全客户端运行 • 隐私保护 • 无数据上传</li>
-        </ul>
+    <!-- Diff mode -->
+    <div class="split-grid" id="splitView" style="display:none">
+      <div class="pane">
+        <div class="pane-head"><span class="dot l">原文（左侧）</span><span id="leftLines">0 行</span></div>
+        <div class="pane-scroll" id="leftScroll" onscroll="syncScroll('left')"></div>
+      </div>
+      <div class="pane">
+        <div class="pane-head"><span class="dot r">修改（右侧）</span><span id="rightLines">0 行</span></div>
+        <div class="pane-scroll" id="rightScroll" onscroll="syncScroll('right')"></div>
       </div>
     </div>
 
+    <div class="uni-scroll" id="unifiedView" style="display:none">
+      <div class="uni-inner" id="unifiedInner"></div>
+    </div>
   </main>
 
-  <!-- Footer -->
-  <footer class="footer footer-center p-6 bg-base-200/80 text-base-content border-t border-base-300/50 mt-auto w-full">
-    <div class="text-sm opacity-80">
-      © 2026 免费文本对比工具 • Powered by Monaco Editor • 使用 Tailwind & DaisyUI 构建
+  <!-- ===== SEO ===== -->
+  <section class="seo">
+    <div class="seo-inner">
+      <div class="seo-intro">
+        <span class="badge-pill"><i class="ic" data-icon="sparkles"></i> 快速、安全 &amp; 免费的在线差异对比工具</span>
+        <h2>强大的在线文本 &amp; 代码比较工具</h2>
+        <p>即时比较纯文本、源代码、JSON 数据和 Markdown 文档。以并排或行内模式识别行级、词级和字符级差异，支持同步滚动和精准格式化。</p>
+      </div>
+      <div class="feat-grid">
+        <div class="feat"><div class="fic ind"><i class="ic" data-icon="zap"></i></div><h3>实时高亮</h3><p>精细的并排或统一视图，高亮显示行级、词级和字符级变更。</p></div>
+        <div class="feat"><div class="fic em"><i class="ic" data-icon="file-code"></i></div><h3>JSON &amp; 代码格式化</h3><p>自动格式化 JSON、按字母排序行、删除空行，在比较前清理格式。</p></div>
+        <div class="feat"><div class="fic am"><i class="ic" data-icon="lock"></i></div><h3>100% 客户端隐私</h3><p>您的敏感数据和源代码完全在浏览器本地处理，绝不会上传到任何远程服务器。</p></div>
+        <div class="feat"><div class="fic te"><i class="ic" data-icon="download"></i></div><h3>导出补丁 &amp; 报告</h3><p>下载标准 Git 统一补丁（.patch）文件、HTML 报告，或复制结构化的 JSON 差异元数据。</p></div>
+      </div>
+      <div class="howto">
+        <h3><i class="ic" data-icon="check2"></i> 如何在线比较文本（3 个简单步骤）</h3>
+        <div class="steps">
+          <div class="step"><div class="num">1</div><div><h4>输入或上传文本</h4><p>将原文粘贴到左侧面板，修改后的文本粘贴到右侧面板，或直接将文件（.txt、.json、.js、.md）拖放到输入框。</p></div></div>
+          <div class="step"><div class="num">2</div><div><h4>自定义选项</h4><p>切换忽略空白、大小写敏感性或行号显示。在分栏视图和统一视图之间切换，或选择词/字符差异粒度。</p></div></div>
+          <div class="step"><div class="num">3</div><div><h4>查看 &amp; 导出结果</h4><p>使用差异步进器（Alt+N / Alt+P）或搜索栏在修改处之间跳转，然后导出补丁文件或复制报告。</p></div></div>
+        </div>
+      </div>
+      <div class="faq">
+        <h3><i class="ic" data-icon="help"></i> 常见问题</h3>
+        <div class="faq-grid">
+          <div class="faq-item"><h4>我的数据安全和保密吗？</h4><p>是的。所有差异计算都在您的浏览器本地进行。不会有任何文本或文件内容发送到外部服务器。</p></div>
+          <div class="faq-item"><h4>我可以比较格式化的 JSON 文件吗？</h4><p>当然！点击任一编辑面板上的"格式化 JSON"按钮，即可在比较前将原始 JSON 字符串格式化为美化打印的结构。</p></div>
+          <div class="faq-item"><h4>支持哪些导出格式？</h4><p>您可以导出兼容 Git 的统一补丁（.patch）文件、可下载的 HTML 可视化差异报告，或 JSON 元数据对象。</p></div>
+          <div class="faq-item"><h4>有键盘快捷键吗？</h4><p>有！按 Alt+N 跳转到下一处差异，Alt+P 跳转到上一处差异，Alt+S 交换面板，Alt+E 打开导出选项。</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Footer ===== -->
+  <footer class="site">
+    <div class="foot-inner">
+      <div class="foot-brand">
+        <div class="logo"><i class="ic" data-icon="git-compare"></i></div>
+        <span class="b">文本比较 PRO</span>
+        <span class="dot">•</span>
+        <p style="margin:0">© <span id="year"></span> 在线文本 &amp; 代码差异对比工具。保留所有权利。</p>
+      </div>
+      <div class="foot-sec"><i class="ic" data-icon="shield"></i> 浏览器本地 &amp; 客户端执行</div>
+      <div class="foot-actions">
+        <button id="footHelp"><i class="ic" data-icon="keyboard"></i> 快捷键 (Alt+H)</button>
+        <button id="footExport">导出补丁</button>
+        <span class="dot">•</span>
+        <span class="foot-love">为开发者用心打造 <i class="ic" data-icon="heart"></i></span>
+      </div>
     </div>
   </footer>
+</div>
 
-  <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.55.1/min/vs/loader.js"></script>
-  <script>
-    require.config({ paths: { vs: 'https://cdn.jsdelivr.net/npm/monaco-editor@0.55.1/min/vs' } });
+<!-- ===== Export Modal ===== -->
+<div class="modal-overlay" id="exportModal" hidden>
+  <div class="modal">
+    <div class="m-head">
+      <div class="m-head-l">
+        <div class="m-ic"><i class="ic" data-icon="download"></i></div>
+        <div>
+          <h3>导出差异结果</h3>
+          <p>下载补丁文件或复制报告元数据</p>
+        </div>
+      </div>
+      <button class="modal-close" data-close="export"><i class="ic" data-icon="x"></i></button>
+    </div>
+    <div class="export-list">
+      <button class="export-item primary" id="dlApp"><div class="ei-l"><div class="ei-ic"><i class="ic" data-icon="laptop"></i></div><div><div class="ei-t">下载独立离线应用（100% 单个 .html 文件）</div><div class="ei-d">单文件完整文本比较应用。双击即可在任何地方离线运行。</div></div></div><div class="ei-arrow"><i class="ic" data-icon="download"></i></div></button>
+      <button class="export-item" id="dlPatch"><div class="ei-l"><div class="ei-ic"><i class="ic" data-icon="code2"></i></div><div><div class="ei-t">下载统一补丁（.patch）</div><div class="ei-d">标准 Git 差异格式，可被 patch 命令读取</div></div></div><div class="ei-arrow"><i class="ic" data-icon="download"></i></div></button>
+      <button class="export-item" id="dlHtml"><div class="ei-l"><div class="ei-ic"><i class="ic" data-icon="file-text"></i></div><div><div class="ei-t">下载 HTML 报告（.html）</div><div class="ei-d">独立格式化 HTML 文件，随时可分享</div></div></div><div class="ei-arrow"><i class="ic" data-icon="download"></i></div></button>
+      <button class="export-item" id="cpPatch"><div class="ei-l"><div class="ei-ic"><i class="ic" data-icon="copy"></i></div><div><div class="ei-t">复制原始补丁文本</div><div class="ei-d">将统一补丁文本直接复制到剪贴板</div></div></div><div class="ei-arrow" id="cpPatchIc"><i class="ic" data-icon="copy"></i></div></button>
+      <button class="export-item" id="cpJson"><div class="ei-l"><div class="ei-ic"><i class="ic" data-icon="code2"></i></div><div><div class="ei-t">复制 JSON 元数据报告</div><div class="ei-d">包含统计数据、相似度评分和补丁数据</div></div></div><div class="ei-arrow" id="cpJsonIc"><i class="ic" data-icon="copy"></i></div></button>
+    </div>
+    <div class="patch-preview"><pre id="patchPreview"></pre></div>
+    <div class="modal-foot"><button class="btn" data-close="export">关闭</button></div>
+  </div>
+</div>
 
-    require(['vs/editor/editor.main'], () => {
-      const container = document.getElementById('editor');
+<!-- ===== Shortcuts Modal ===== -->
+<div class="modal-overlay" id="helpModal" hidden>
+  <div class="modal" style="max-width:28rem">
+    <div class="m-head">
+      <div class="m-head-l">
+        <div class="m-ic"><i class="ic" data-icon="keyboard"></i></div>
+        <div><h3>键盘快捷键 &amp; 帮助</h3></div>
+      </div>
+      <button class="modal-close" data-close="help"><i class="ic" data-icon="x"></i></button>
+    </div>
+    <div class="sc-list" id="scList"></div>
+    <div class="tips">
+      <strong>最佳差异对比性能提示：</strong>
+      <ul>
+        <li>对行内文本编辑请使用 <strong>按词</strong> 或 <strong>按字符</strong> 模式。</li>
+        <li>对大文件请使用 <strong>仅看差异</strong> 隐藏相同行。</li>
+        <li>直接将文件拖放到输入面板，或点击 <strong>上传</strong>。</li>
+      </ul>
+    </div>
+    <div class="modal-foot"><button class="btn btn-primary" data-close="help" style="background:var(--accent);color:#fff;border:none">知道了</button></div>
+  </div>
+</div>
 
-      const diffEditor = monaco.editor.createDiffEditor(container, {
-        automaticLayout: true,
-        renderSideBySide: true,
-        originalEditable: true,
-        modifiedEditable: true,
-        enableSplitViewResizing: true,
-        minimap: { enabled: false },
-        fontSize: 16,
-        lineHeight: 28,
-        lineNumbers: 'on',
-        theme: 'vs-dark',
-        scrollBeyondLastLine: false,
-        renderWhitespace: 'boundary',
-        folding: true,
-        glyphMargin: false,
-        ignoreTrimWhitespace: true,
-        renderIndicators: true,
-        renderOverviewRuler: true,
-        diffAlgorithm: 'advanced',
-      });
-
-      const originalModel = monaco.editor.createModel(
-        '在这里粘贴原始文本...\n'.repeat(10),
-        'plaintext'
-      );
-
-      const modifiedModel = monaco.editor.createModel(
-        '在这里粘贴修改后的文本...\n差异会自动高亮显示！\n'.repeat(10),
-        'plaintext'
-      );
-
-      diffEditor.setModel({ original: originalModel, modified: modifiedModel });
-
-      setTimeout(() => {
-        diffEditor.updateOptions({});
-      }, 100);
-
-      const originalEditor = diffEditor.getOriginalEditor();
-      const modifiedEditor = diffEditor.getModifiedEditor();
-
-      document.getElementById('line-numbers').onchange = (e) => {
-        const mode = e.target.checked ? 'on' : 'off';
-        originalEditor.updateOptions({ lineNumbers: mode });
-        modifiedEditor.updateOptions({ lineNumbers: mode });
-      };
-
-      let isDark = true;
-      document.getElementById('theme-toggle').onclick = () => {
-        isDark = !isDark;
-        document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
-        monaco.editor.setTheme(isDark ? 'vs-dark' : 'vs');
-        document.getElementById('theme-text').textContent = isDark 
-          ? '切换到浅色模式' 
-          : '切换到深色模式';
-      };
-    });
-  </script>
+<script src="style/js/diff-cn.js"></script>
 </body>
 </html>
